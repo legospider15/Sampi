@@ -18,25 +18,7 @@ def resource_path(relative_path):
 
     return base_path / relative_path
 
-KEYWORDS = {
-    "set",
-    "if",
-    "else",
-    "end",
-    "repeat",
-    "until",
-    "as",
-    "in",
-    "func",
-    "return",
-    "or",
-    "and",
-    "not",
-    "to",
-    "exit",
-    "use",
-    "glue"
-    }
+KEYWORDS = sampi.lexer.KEYWORDS.keys()
 
 PREMADE = {
     "true",
@@ -53,6 +35,7 @@ PREMADE = {
     "word",
     "number"
     }
+
 DATA_TYPES = ("NUMBER", "STRING", "COMMENT")
 
 curr_file_name = "Untitled"
@@ -150,7 +133,7 @@ def highlight_code():
         text_box.tag_remove(tag, "1.0", "end")
 
     code = text_box.get("1.0", tk.END)
-    tokens = sampi.lex_highlight(code)
+    tokens = sampi.lexer.lex_highlight(code)
 
     position = "1.0"
 

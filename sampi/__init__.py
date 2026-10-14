@@ -1,4 +1,4 @@
-from .lexer import lex, lex_highlight
+from .lexer import lex
 from .parser import Parser
 from .compiler import Compiler
 from .vm import run_vm
