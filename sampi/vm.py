@@ -260,7 +260,7 @@ class Function:
         self.glues = glues
 
     def __call__(self, *args):
-        return run_vm(self.byte_code, dict(zip(self.params, args)) | self.vars_, self.glues, "CALL")
+        return run_vm(self.byte_code, self.vars_ | dict(zip(self.params, args)), self.glues, "CALL")
 
 class Module:
     def __init__(self, name, directory=DOWNLOADS):
