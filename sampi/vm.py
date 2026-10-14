@@ -215,7 +215,7 @@ def run_vm(byte_code, starting_vars=None, starting_glues=None, type_="START"):
                     while (byte := byte_code[ip])[0] != "END_FUNC":
                         code.append(byte)
                         ip += 1
-                    vars_[name] = Function(code, byte[1], vars_, glues)
+                    vars_[name] = Function(code, byte[1], vars_, glues, name)
 
                 case "RETURN":
                     if type_ == "START":
@@ -253,14 +253,18 @@ def run_vm(byte_code, starting_vars=None, starting_glues=None, type_="START"):
         return vars_
 
 class Function:
-    def __init__(self, byte_code, params, vars_, glues):
+    def __init__(self, byte_code, params, vars_, glues, name):
         self.byte_code = byte_code
         self.params = params
         self.vars_ = vars_
         self.glues = glues
+        self.name = name
 
     def __call__(self, *args):
         return run_vm(self.byte_code, self.vars_ | dict(zip(self.params, args)), self.glues, "CALL")
+    
+    def __repr__(self):
+        return f"function {self.name}"
 
 class Module:
     def __init__(self, name, directory=DOWNLOADS):
@@ -275,3 +279,7 @@ class Module:
                 code = file.read()
             # lex, parse, compile, and run the module
             self.attributes = run_vm(Compiler().compile_(Parser(lex(code)).parse()))
+        self.name = name
+    
+    def __repr__(self):
+        return f"moudle {self.name}"
