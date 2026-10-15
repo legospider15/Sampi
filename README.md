@@ -171,11 +171,6 @@ until guess = "Password":
 	set guess to ask("What is the password? ")
 end
 ```
-### **warning**
-when using ask, you need to type into python IDE.
-You can only run Sampi scripts through the Sampi IDE.
-I am working on it. Remember, Sampi is experimental.
-
 It stops when the condition is true.
 Be careful not to make an infinite loop.
 
