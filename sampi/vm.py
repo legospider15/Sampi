@@ -7,6 +7,7 @@ from pathlib import Path
 import operator
 import random
 import importlib.util as importer
+import sys
 
 def add(a, b):
     ta = type(a)
@@ -62,7 +63,9 @@ UNARY_OPS = {
     }
 
 def ask(prompt=""):
-    return String(input(prompt))
+    sys.stdout.write(str(prompt))
+    ansr = String(sys.stdin.readline().rstrip("\n"))
+    return ansr
 
 def random_(a, b):
     return Number(random.randint(a, b))

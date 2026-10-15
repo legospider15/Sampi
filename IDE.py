@@ -183,24 +183,99 @@ def handle_tab(event):
     text_box.insert("insert", "    ")
     return "break"
 
-class TextRedirector:
-    def __init__(self, text_widget):
-        self.text_widget = text_widget
+import queue
 
+class Redirector:
+    def __init__(self, text_widget, root):
+        self.text_widget = text_widget
+        self.root = root
+
+        self.input_queue = queue.Queue()
+        self.waiting_for_input = False
+        self.input_start = "1.0"
+
+        self.text_widget.config(state="disabled")
+        self.text_widget.bind("<KeyPress>", self.on_keypress)
+
+    # Redirect stdout / stderr
     def write(self, string, tag=None):
-        root.after(0, self._write, string, tag)
+        if string:
+            self.root.after(0, self._write, string, tag)
 
     def _write(self, string, tag=None):
-        self.text_widget.config(state="normal")
-        if tag:
-            self.text_widget.insert(tk.END, string, tag)
-        else:
-            self.text_widget.insert(tk.END, string)
-        self.text_widget.see(tk.END)
-        self.text_widget.config(state="disabled")
+        widget = self.text_widget
+        widget.config(state="normal")
+
+        # Insert output before the user's input.
+        widget.insert(self.input_start, string, tag or ())
+
+        # Advance the boundary past the inserted output.
+        self.input_start = widget.index(
+            f"{self.input_start}+{len(string)}c"
+        )
+
+        widget.see(tk.END)
+        widget.config(state="disabled")
 
     def flush(self):
         pass
+
+    # Redirect stdin
+    def readline(self):
+        self.root.after(0, self._start_input)
+        return self.input_queue.get()
+
+    def _start_input(self):
+        widget = self.text_widget
+        self.waiting_for_input = True
+        widget.config(state="normal")
+
+        # Input begins at the current end of the output.
+        self.input_start = widget.index("end-1c")
+        widget.mark_set("insert", tk.END)
+        widget.focus_set()
+
+    def on_keypress(self, event):
+        widget = self.text_widget
+
+        if not self.waiting_for_input:
+            return "break"
+
+        boundary = self.input_start
+
+        if event.keysym == "Return":
+            widget = self.text_widget
+        
+            # Capture only the user's input.
+            value = widget.get(self.input_start, "end-1c")
+        
+            # Append the newline without moving existing text.
+            widget.insert(tk.END, "\n")
+        
+            # Update the boundary to the new end.
+            self.input_start = widget.index("end-1c")
+        
+            widget.config(state="disabled")
+            self.waiting_for_input = False
+        
+            self.input_queue.put(value + "\n")
+            return "break"
+
+        # Protect output from Backspace and Delete.
+        if event.keysym == "BackSpace":
+            if widget.compare("insert", "<=", boundary):
+                return "break"
+
+        elif event.keysym == "Delete":
+            if widget.compare("insert", "<", boundary):
+                return "break"
+
+        # Keep typing after the output boundary.
+        elif event.char and event.char.isprintable():
+            if widget.compare("insert", "<", boundary):
+                widget.mark_set("insert", tk.END)
+
+        return None
 
 root = tk.Tk()
 root.geometry("900x600")
@@ -242,8 +317,9 @@ pane.add(output_box, stretch="always")
 output_box.tag_configure("ERROR", foreground="#FF0000")
 text_box.tag_configure("ERROR", foreground="#FF0000")
 
-redirector = TextRedirector(output_box)
+redirector = Redirector(output_box, root)
 sys.stdout = redirector
+sys.stdin = redirector
 
 run_btn = ttk.Button(root, text="Run", command=run)
 run_btn.grid(row=2, column=0)
