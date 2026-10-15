@@ -8,10 +8,14 @@ The symbol for Sampi is ϡ.
 
 Download Sampi using the green **Code** button on 
 GitHub and select **Download ZIP**. Extract the downloaded folder.
-You now have the Sampi editor and source code
+You now have the Sampi editor and source code. You can also go to
+[[Sampi's website](https://legospider15.github.io/codewithsampi/)
+to get a standalone application.
 
 ## **Running Sampi**
-To run Sampi, you will need **Python3**, and **nothing else**.
+If you got the standalone application, open it normally. You may need
+to tell you computer that it isn't malware. If you downloaded the 
+source code, then you will need **Python3**, and **nothing else**.
 Open a terminal in the project folder and run:
 ```text
 python3 IDE.py
