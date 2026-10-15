@@ -26,7 +26,7 @@ Once the IDE opens, you can begin experimenting with Sampi.
 ## **Learning Sampi**
 The following instructions wil teach you how to code in
 Sampi. For a far more complete and up-to-date tutorial,
-go to [Sampi's website's documentation](https://legospider15.github.io/codewithsampi/docs.html)
+go to [Sampi's website documentation](https://legospider15.github.io/codewithsampi/docs.html)
 
 ## **Printing**
 
