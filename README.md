@@ -9,7 +9,7 @@ The symbol for Sampi is ϡ.
 Download Sampi using the green **Code** button on 
 GitHub and select **Download ZIP**. Extract the downloaded folder.
 You now have the Sampi editor and source code. You can also go to
-[[Sampi's website](https://legospider15.github.io/codewithsampi/)
+[Sampi's website](https://legospider15.github.io/codewithsampi/)
 to get a standalone application.
 
 ## **Running Sampi**
