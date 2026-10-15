@@ -39,6 +39,7 @@ And to increment it:
 ```text
 set x to x + 1
 ```
+When making a varable in Sampi, **always** use snake_case.
 ## **Operators**
 
 | Operation | Example | Result |
