@@ -254,7 +254,7 @@ set x to ["a", "b", "c"]
 | remove() | `x.remove("b")` | `["a", "c"]` |
 | delete | `x.delete(3)` | `["a","b"]` |
 | get_index() | `x.get_index("c")` | `3` |
-| insert() | `insert(1, "hello")` | `["a", "hello", "b", "c"]` |
+| insert() | `x.insert(1, "hello")` | `["a", "hello", "b", "c"]` |
 | clear() | `x.clear()` | `[]` |
 | join() | `x.join(", ")` | `"a, b, c"` |
 ```text
