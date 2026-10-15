@@ -32,11 +32,11 @@ go to [Sampi's website documentation](https://legospider15.github.io/codewithsam
 
 To display a value, type:
 ```text
-say("Hello, world!")
+say("Hello, World!")
 ```
 Output:
 ```text
-Hello, World
+Hello, World1
 ```
 ## **Variables**
 
