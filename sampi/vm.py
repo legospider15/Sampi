@@ -250,6 +250,15 @@ def run_vm(byte_code, starting_vars=None, starting_glues=None, type_="START"):
                 case "DICT":
                     items = get_bytes(byte[1] * 2)
                     stack.append(Dict(dict(zip(items[::2], items[1::2]))))
+                
+                case "FIND":
+                    points = byte[1]
+                    if (value := points.get(stack.pop())) is not None:
+                        ip = value
+                    else:
+                        ip = points[None]
+                    continue
+                        
 
         ip += 1
     if type_ == "START":

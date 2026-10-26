@@ -2,6 +2,7 @@ import json
 import os
 import sys
 import platform
+import queue
 import tkinter as tk
 from threading import Thread
 from tkinter import filedialog, ttk
@@ -182,8 +183,6 @@ def make_auto_closer(char):
 def handle_tab(event):
     text_box.insert("insert", "    ")
     return "break"
-
-import queue
 
 class Redirector:
     def __init__(self, text_widget, root):

@@ -41,12 +41,21 @@ class Parser:
             "FUNC": self.func,
             "EXIT": lambda: a.Exit,
             "USE": self.import_,
+            "FIND": self.find,
             "COMMENT": lambda: None
             }
 
     @property
     def current(self):
         return self.tokens[self.pos]
+    
+    def make_literal(self, node):
+        node0 = node[0]
+        if node0 == "NUMBER":
+            return a.Number(node[1])
+        elif node0 == "STRING":
+            return a.String(node[1])
+        raise TypeError(f"find can only accept string or number literals, not {node0}")
 
     def parse_line(self):
         token = self.current
@@ -119,6 +128,36 @@ class Parser:
             self.eat("AS")
             return a.Import(name, self.eat("IDENT")[1])
         return a.Import(name, name)
+    
+    def find(self):
+        var = a.Var(self.eat("IDENT")[1])
+        self.eat("COLON")
+        choices = {}
+        
+        while (curr := self.current)[0] in ("NUMBER", "STRING", "COLON"):
+            curr0 = curr[0]
+
+            if curr0 == "COLON":
+                self.eat("COLON")
+                choices[None] = self.parse(("END",), "FIND_CHOICE")
+                break
+            
+            choice = [self.make_literal(curr)]
+            self.eat(curr0)
+        
+            while self.current[0] == "OR":
+                self.eat("OR")
+                choice.append(self.make_literal(self.current))
+                self.eat(self.current[0])
+    
+            self.eat("COLON")
+            choices[tuple(choice)] = self.parse(("END", "NUMBER", "STRING", "COLON"), "FIND_CHOICE")
+            
+            if self.current == "END":
+                break
+        
+        self.eat("END")
+        return a.Find(var, choices)
 
     def parse_multiset(self, token0):
         self.eat(token0)

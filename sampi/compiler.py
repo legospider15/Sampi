@@ -14,6 +14,7 @@ class Compiler():
             a.Return: self.return_,
             a.Until: self.until,
             a.Import: lambda node: ("IMPORT", node.name, node.alias),
+            a.Find: self.find,
 
             a.Op: self.op,
             a.Call: self.call,
@@ -142,3 +143,32 @@ class Compiler():
     def Dict(self, node):
         self.compile_([x for pair in node.items() for x in pair])
         return "DICT", len(node)
+    
+    def find(self, node):
+        self.byte_code.append(("GET", node.var.name))
+        choices = node.choices
+        indexes = {}
+        end_indexes = []
+        index = self.emit(("FIND", None))
+
+        for choice, code in choices.items():
+            length = self.length
+
+            if type(choice) is tuple:
+                for sub_choice in choice:
+                    indexes[sub_choice] = length
+            else:
+                indexes[choice] = length
+            
+            self.compile_(code)
+            end_indexes.append(self.emit(("JUMP", None)))
+        
+        length = self.length    
+        indexes.setdefault(None, length)
+        self.patch(index, indexes)
+        
+        for index in end_indexes:
+            self.patch(index, length)
+                
+        
+        

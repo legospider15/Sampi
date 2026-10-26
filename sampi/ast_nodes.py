@@ -142,6 +142,7 @@ class Dict(dict):
 
 # misc. (these are AST)
 
+
 class Index:
     def __init__(self, var, index):
         self.var = var
@@ -191,6 +192,14 @@ class Op:
         return f"{self.left} {self.op} {self.right}"
 
 # keywords
+
+class Find:
+    def __init__(self, var, choices):
+        self.var = var
+        self.choices = choices
+    
+    def __repr__(self):
+        return f"find {self.var}: {self.choices}"
 
 class Return:
     def __init__(self, value):
