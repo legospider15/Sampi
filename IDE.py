@@ -154,6 +154,8 @@ def highlight_code():
             text_box.tag_add(type_, start, end)
         elif type_ == "UNKNOWN":
             text_box.tag_add("ERROR", start, end)
+        elif type_ == "BLOCK_COMMENT":
+            text_box.tag_add("COMMENT", start, end)
         else:
             text_box.tag_add("OTHER", start, end)
 
@@ -169,7 +171,7 @@ def text_changed(event):
 
 def make_auto_closer(char):
     def closure(event):
-        maching_char = {'"': '"', "(": ")", "[": "]", "{": "}"}
+        maching_char = {'"': '"', "(": ")", "[": "]", "{": "}", "#": "#"}
         cursor_pos = text_box.index("insert")
 
         text_box.insert(cursor_pos, maching_char[char])
@@ -301,7 +303,7 @@ text_box = tk.Text(
 # auto type
 #=============================================================
 
-for char in ['"', "(", "[", "{"]:
+for char in ['"', "(", "[", "{", "#"]:
     binding_function = make_auto_closer(char)
     text_box.bind(char, binding_function)
 

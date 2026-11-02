@@ -1,10 +1,13 @@
 import re
 
 TOKEN_SPEC = [
+    ("COMMENT", r"//.*"),
+    ("BLOCK_COMMENT", r"#[^#]*#"),
+    
     ("NUMBER", r"\d+(?:\.\d+)?"),
-
     ("STRING", r'"[^"]*"'),
-    ("IDENT", r"[a-zA-Z_][a-zA-Z0-9_]*"),
+
+    ("IDENT", r"[a-zA-Z_@][a-zA-Z0-9_]*"),
 
     ("EQUALITY", r"="),
     ("NOT_EQUAL", r"!="),
@@ -31,8 +34,6 @@ TOKEN_SPEC = [
     ("COLON", r":"),
     ("DOT", r"\."),
     ("COMMA", r","),
-
-    ("COMMENT", r"#.*"),
 
     ("SPACE", r"[ \t]+"),
     ("NEWLINE", r"\n"),
@@ -61,7 +62,9 @@ KEYWORDS = {k: v for k, v in [(i, i.upper()) for i in
 "exit",
 "use",
 "glue",
-"find"
+"find",
+"class",
+"method",
 ]]}
 
 def lex(code):

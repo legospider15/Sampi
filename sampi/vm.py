@@ -295,3 +295,8 @@ class Module:
     
     def __repr__(self):
         return f"moudle {self.name}"
+
+class Class:
+    def __init__(self, name, parents):
+        self.name = name
+        self.parents = parents

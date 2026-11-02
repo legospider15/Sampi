@@ -42,7 +42,9 @@ class Parser:
             "EXIT": lambda: a.Exit,
             "USE": self.import_,
             "FIND": self.find,
-            "COMMENT": lambda: None
+            "CLASS": self.class_,
+            "COMMENT": lambda: None,
+            "BLOCK_COMMENT": lambda: None
             }
 
     @property
@@ -141,7 +143,7 @@ class Parser:
                 self.eat("COLON")
                 choices[None] = self.parse(("END",), "FIND_CHOICE")
                 break
-            
+
             choice = [self.make_literal(curr)]
             self.eat(curr0)
         
@@ -158,6 +160,15 @@ class Parser:
         
         self.eat("END")
         return a.Find(var, choices)
+    
+    def class_(self):
+        name = self.eat("IDENT")[1]
+        parent_classes = []
+        while self.current[0] != "COLON":
+            parent_classes.append(self.eat("IDENT")[1])
+        self.eat("COLON")
+        return a.Class(name, self.parse("END", "CLASS_BLOCK"), parent_classes)
+        
 
     def parse_multiset(self, token0):
         self.eat(token0)

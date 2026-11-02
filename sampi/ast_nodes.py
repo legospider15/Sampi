@@ -142,6 +142,11 @@ class Dict(dict):
 
 # misc. (these are AST)
 
+class Class:
+    def __init__(self, name, code, parents):
+        self.name = name
+        self.code = code
+        self.parents = parents
 
 class Index:
     def __init__(self, var, index):
