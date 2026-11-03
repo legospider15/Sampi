@@ -1,7 +1,7 @@
 # **Sampi**
 
 Sampi is an obsolete Greek letter and symbol for 900.
-Sampi (also known as Sampi-lang) is also the name of a high-level programming language.
+Sampi (also known as Sampi-lang) is the name of a high-level programming language as well.
 The symbol for Sampi is ϡ.
 
 ## **Installing Sampi**
