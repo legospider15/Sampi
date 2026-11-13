@@ -62,9 +62,7 @@ KEYWORDS = {k: v for k, v in [(i, i.upper()) for i in
 "exit",
 "use",
 "glue",
-"find",
-"class",
-"method",
+"find"
 ]]}
 
 def lex(code):
