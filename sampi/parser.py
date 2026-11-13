@@ -42,7 +42,6 @@ class Parser:
             "EXIT": lambda: a.Exit,
             "USE": self.import_,
             "FIND": self.find,
-            "CLASS": self.class_,
             "COMMENT": lambda: None,
             "BLOCK_COMMENT": lambda: None
             }
