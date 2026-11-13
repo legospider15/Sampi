@@ -15,7 +15,6 @@ class Compiler():
             a.Until: self.until,
             a.Import: lambda node: ("IMPORT", node.name, node.alias),
             a.Find: self.find,
-            a.Class: self.class_,
 
             a.Op: self.op,
             a.Call: self.call,
@@ -170,11 +169,3 @@ class Compiler():
         
         for index in end_indexes:
             self.patch(index, length)
-    
-    def class_(self, node):
-        self.byte_code.append(("START_CLASS", node.name, node.parents))
-        index = self.length 
-        self.minus += index
-        self.compile_(node.code)
-        self.byte_code.append(("END_CLASS", node.params))
-        self.minus -= index
